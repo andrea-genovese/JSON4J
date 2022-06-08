@@ -7,6 +7,10 @@ public class JSONArray {
     public static ParseResult parse(char[] json, int index) {
         if (json[index++] != '[')
             return null;
+        index = JSONValue.ignoreWhiteSpaces(json, index);
+        if(index >= json.length) {
+            return null;
+        }
         List<Object> list = new ArrayList<>();
         if (json[index] == ']') {
             return new ParseResult(list, index + 1);
@@ -18,7 +22,8 @@ public class JSONArray {
                 return null;
             }
             list.add(res.value());
-            i = res.index();
+            i = JSONValue.ignoreWhiteSpaces(json, res.index());
+
             if(i >= json.length) {
                 return null;
             }

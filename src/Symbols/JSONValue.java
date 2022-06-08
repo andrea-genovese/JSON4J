@@ -12,6 +12,10 @@ public interface JSONValue {
     }
 
     public static ParseResult parse(char[] json, int index) {
+        index = ignoreWhiteSpaces(json, index);
+        if(index >= json.length) {
+            return null;
+        }
         ParseResult res = JSONBoolean.parse(json, index);
         if (res != null)
             return res;
@@ -35,5 +39,16 @@ public interface JSONValue {
             return res;
         return null;
     }
+    static int ignoreWhiteSpaces(char[] json, int index){
+        for (int i = index; i <json.length; i++){
+            if(!isWhiteSpace(json[i])) {
+                return i;
+            }
+        }
+        return json.length;
+    }
 
+    private static boolean isWhiteSpace(char c) {
+        return c==' ' || c=='\t' || c == '\n' || c=='\r';
+    }
 }
