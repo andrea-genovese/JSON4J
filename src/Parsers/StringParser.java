@@ -1,6 +1,6 @@
-package Symbols;
+package Parsers;
 
-public class JSONString implements JSONValue {
+public class StringParser {
     private static String createString(char[] arr, int start, int end) {
         char[] subarray = new char[end-start];
         for (int i = 0; i < subarray.length; i++) {

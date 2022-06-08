@@ -1,6 +1,6 @@
-package Symbols;
+package Parsers;
 
-public class JSONNull {
+public class NullParser {
     public static ParseResult parse(char[] json, int index){
         if (json[index] == 'n' &&
                 json[index+1] == 'u' &&

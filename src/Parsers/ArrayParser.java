@@ -1,13 +1,13 @@
-package Symbols;
+package Parsers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSONArray {
+public class ArrayParser {
     public static ParseResult parse(char[] json, int index) {
         if (json[index++] != '[')
             return null;
-        index = JSONValue.ignoreWhiteSpaces(json, index);
+        index = ValueParser.ignoreWhiteSpaces(json, index);
         if(index >= json.length) {
             return null;
         }
@@ -17,12 +17,12 @@ public class JSONArray {
         }
 
         for (int i = index; i < json.length; i++) {
-            ParseResult res = JSONValue.parse(json, i);
+            ParseResult res = ValueParser.parse(json, i);
             if (res == null) {
                 return null;
             }
             list.add(res.value());
-            i = JSONValue.ignoreWhiteSpaces(json, res.index());
+            i = ValueParser.ignoreWhiteSpaces(json, res.index());
 
             if(i >= json.length) {
                 return null;

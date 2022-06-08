@@ -1,6 +1,6 @@
-package Symbols;
+package Parsers;
 
-public class JSONNumber implements JSONValue {    
+public class NumberParser {    
 
     private static Number createNumber(char[] arr, int start, int end) {
         char[] sub = new char[end - start];

@@ -1,14 +1,13 @@
-package Symbols;
+package Parsers;
 
-public interface JSONValue {
+public class ValueParser {
     
-    public static Object parse(String json) {
-        char[] jsonArr = json.toCharArray();
-        ParseResult p = parse(jsonArr, 0);
-        if (p != null && ignoreWhiteSpaces(jsonArr, p.index()) == json.length()) {
+    public static Object parse(char[] json) {        
+        ParseResult p = parse(json, 0);
+        if (p != null && ignoreWhiteSpaces(json, p.index()) == json.length) {
             return p.value();
         }
-        throw new IllegalArgumentException("Not a valid JSON String");
+        throw new InvalidJSONException("Not a valid JSON string");
 
     }
 
@@ -17,29 +16,31 @@ public interface JSONValue {
         if(index >= json.length) {
             return null;
         }
-        ParseResult res = JSONBoolean.parse(json, index);
+        ParseResult res = BooleanParser.parse(json, index);
         if (res != null)
             return res;
 
-        res = JSONNumber.parse(json, index);
+        res = NumberParser.parse(json, index);
         if (res != null)
             return res;
 
-        res = JSONNull.parse(json, index);
+        res = NullParser.parse(json, index);
         if (res != null)
             return res;
 
-        res = JSONString.parse(json, index);
+        res = StringParser.parse(json, index);
         if (res != null)
             return res;
-        res = JSONArray.parse(json, index);
+        res = ArrayParser.parse(json, index);
         if (res != null)
             return res;
-        res = JSONObject.parse(json, index);
+        res = ObjectParser.parse(json, index);
+        
         if (res != null)
             return res;
         return null;
     }
+    
     static int ignoreWhiteSpaces(char[] json, int index){
         for (int i = index; i <json.length; i++){
             if(!isWhiteSpace(json[i])) {

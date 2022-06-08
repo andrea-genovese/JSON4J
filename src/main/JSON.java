@@ -1,12 +1,15 @@
 package main;
-
-import Symbols.JSONValue;
+import Parsers.ValueParser;
 
 public class JSON {
-    public static String stringify(JSONValue obj){
-        return null;
+    public static String stringify(Object obj){
+        if(obj instanceof String) {
+            return "\""+obj+"\"";
+        }
+        return "";
     }
-    public static Object parse(String json){
-        return JSONValue.parse(json);
+    public static Object parse(String json) {
+        return ValueParser.parse(json.toCharArray());
     }
+
 }

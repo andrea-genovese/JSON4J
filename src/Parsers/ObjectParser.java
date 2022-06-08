@@ -1,14 +1,14 @@
-package Symbols;
+package Parsers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class JSONObject {
+public class ObjectParser {
     public static ParseResult parse(char[] json, int index) {
         if (json[index++] != '{') {
             return null;
         }
-        index = JSONValue.ignoreWhiteSpaces(json, index);
+        index = ValueParser.ignoreWhiteSpaces(json, index);
         if(index >= json.length) {
             return null;
         }
@@ -16,11 +16,11 @@ public class JSONObject {
         if (json[index] == '}')
             return new ParseResult(map, index+1);
         for (; index < json.length; index++) {
-            index = JSONValue.ignoreWhiteSpaces(json, index);
-            ParseResult key = JSONString.parse(json, index);
+            index = ValueParser.ignoreWhiteSpaces(json, index);
+            ParseResult key = StringParser.parse(json, index);
             if (key == null)
                 return null;
-            index = JSONValue.ignoreWhiteSpaces(json, key.index());
+            index = ValueParser.ignoreWhiteSpaces(json, key.index());
             
             if(index>= json.length) {
                 return null;
@@ -29,11 +29,11 @@ public class JSONObject {
                 return null;
             }
             index++;
-            ParseResult val = JSONValue.parse(json, index);
+            ParseResult val = ValueParser.parse(json, index);
             if(val == null) {
                 return null;
             }
-            index = JSONValue.ignoreWhiteSpaces(json, val.index());
+            index = ValueParser.ignoreWhiteSpaces(json, val.index());
             if(index >= json.length) {
                 return null;
             }
