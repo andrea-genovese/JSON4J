@@ -8,38 +8,42 @@ public class JSONObject {
         if (json[index++] != '{') {
             return null;
         }
+        index = JSONValue.ignoreWhiteSpaces(json, index);
+        if(index >= json.length) {
+            return null;
+        }
         Map<String, Object> map = new HashMap<>();
         if (json[index] == '}')
             return new ParseResult(map, index+1);
-        for (int i = index; i < json.length; i++) {
-            ParseResult key = JSONString.parse(json, i);
+        for (; index < json.length; index++) {
+            index = JSONValue.ignoreWhiteSpaces(json, index);
+            ParseResult key = JSONString.parse(json, index);
             if (key == null)
                 return null;
-            i = key.index();
+            index = JSONValue.ignoreWhiteSpaces(json, key.index());
             
-            if(i>= json.length) {
+            if(index>= json.length) {
                 return null;
             }
-            if(json[i++] != ':') {
+            if(json[index] != ':') {
                 return null;
             }
-            ParseResult val = JSONValue.parse(json, i);
+            index++;
+            ParseResult val = JSONValue.parse(json, index);
             if(val == null) {
                 return null;
             }
-            i = val.index();
+            index = JSONValue.ignoreWhiteSpaces(json, val.index());
+            if(index >= json.length) {
+                return null;
+            }
             map.put((String)key.value(), val.value());
-            if(i >= json.length) {
+            if(json[index] == '}') {
+                return new ParseResult(map, index+1);
+            }
+            if(json[index] != ',') {
                 return null;
             }
-            if(json[i] == '}') {
-                return new ParseResult(map, i+1);
-            }
-            if(json[i] != ',') {
-                return null;
-            }
-
-
         }
 
         return null;

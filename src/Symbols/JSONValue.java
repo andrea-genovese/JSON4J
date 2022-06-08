@@ -1,10 +1,11 @@
 package Symbols;
 
 public interface JSONValue {
-
+    
     public static Object parse(String json) {
-        ParseResult p = parse(json.toCharArray(), 0);
-        if (p != null && p.index() == json.length()) {
+        char[] jsonArr = json.toCharArray();
+        ParseResult p = parse(jsonArr, 0);
+        if (p != null && ignoreWhiteSpaces(jsonArr, p.index()) == json.length()) {
             return p.value();
         }
         throw new IllegalArgumentException("Not a valid JSON String");
