@@ -1,7 +1,7 @@
 package Parsers;
 
-import java.util.HashMap;
-import java.util.Map;
+import main.JSONHashMap;
+import main.JSONObject;
 
 public class ObjectParser {
     public static ParseResult parse(char[] json, int index) {
@@ -12,9 +12,9 @@ public class ObjectParser {
         if(index >= json.length) {
             return null;
         }
-        Map<String, Object> map = new HashMap<>();
+       JSONObject obj = new JSONHashMap();
         if (json[index] == '}')
-            return new ParseResult(map, index+1);
+            return new ParseResult(obj, index+1);
         for (; index < json.length; index++) {
             index = ValueParser.ignoreWhiteSpaces(json, index);
             ParseResult key = StringParser.parse(json, index);
@@ -37,9 +37,9 @@ public class ObjectParser {
             if(index >= json.length) {
                 return null;
             }
-            map.put((String)key.value(), val.value());
+            obj.put((String)key.value(), val.value());
             if(json[index] == '}') {
-                return new ParseResult(map, index+1);
+                return new ParseResult(obj, index+1);
             }
             if(json[index] != ',') {
                 return null;

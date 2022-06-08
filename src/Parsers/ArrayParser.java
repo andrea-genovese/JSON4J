@@ -1,7 +1,6 @@
 package Parsers;
-
-import java.util.ArrayList;
-import java.util.List;
+import main.JSONArray;
+import main.JSONArrayList;
 
 public class ArrayParser {
     public static ParseResult parse(char[] json, int index) {
@@ -11,7 +10,7 @@ public class ArrayParser {
         if(index >= json.length) {
             return null;
         }
-        List<Object> list = new ArrayList<>();
+        JSONArray list = new JSONArrayList();
         if (json[index] == ']') {
             return new ParseResult(list, index + 1);
         }
